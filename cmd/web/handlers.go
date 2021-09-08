@@ -12,6 +12,7 @@ func dasboard(w http.ResponseWriter, r *http.Request) {
 
 	files := []string{
 		"./ui/html/dashboard.page.tmpl",
+		"./ui/html/sidebar.partial.tmpl",
 		"./ui/html/base.layout.tmpl",
 	}
 
