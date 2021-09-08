@@ -10,7 +10,12 @@ import (
 
 func dasboard(w http.ResponseWriter, r *http.Request) {
 
-	ts, err := template.ParseFiles("./ui/html/dashboard.page.tmpl")
+	files := []string{
+		"./ui/html/dashboard.page.tmpl",
+		"./ui/html/base.layout.tmpl",
+	}
+
+	ts, err := template.ParseFiles(files...)
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
