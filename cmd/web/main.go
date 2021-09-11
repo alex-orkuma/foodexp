@@ -14,7 +14,11 @@ func main() {
 	mux.HandleFunc("/product", getProducts)
 	mux.HandleFunc("/product?id=1", getProduct)
 
-	log.Println("starting a server on port 4000...")
-	err := http.ListenAndServe(":4000", mux)
+	fileserver := http.FileServer(http.Dir("./ui/static"))
+
+	mux.Handle("/static/", http.StripPrefix("/static", fileserver))
+
+	log.Println("starting a server on port 5000...")
+	err := http.ListenAndServe(":5000", mux)
 	log.Fatal(err)
 }
