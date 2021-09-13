@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/alex-orkuma/foodexp/pkg/models/mysql"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -14,6 +15,7 @@ import (
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
+	products *mysql.ProductModel
 }
 
 func main() {
@@ -22,7 +24,7 @@ func main() {
 	addr := flag.String("addr", ":4000", "HTTP Network Address")
 
 	// MySql Data source name
-	dsn := flag.String("dsn", "", "MySql Data source Name")
+	dsn := flag.String("dsn", "foodexp:Or$kumashnd417@/foodexp?parseTime=true", "MySql Data source Name")
 	flag.Parse()
 
 	// New Info Logger
@@ -40,6 +42,7 @@ func main() {
 	app := &application{
 		errorLog: erroLog,
 		infoLog:  infoLog,
+		products: &mysql.ProductModel{DB: *db},
 	}
 
 	// Initialize a server struct
