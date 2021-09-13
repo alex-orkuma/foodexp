@@ -1,24 +1,51 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
+	"os"
+
+	_ "github.com/go-sql-driver/mysql"
 )
+
+// A Custom application struct for dependency injection
+type application struct	{
+	errorLog *log.Logger
+	infoLog *log.Logger
+
+}
 
 func main() {
 
-	mux := http.NewServeMux()
+	// Go server address flag
+	addr := flag.String("addr", ":4000", "HTTP Network Address")
 
-	mux.HandleFunc("/", dasboard)
-	mux.HandleFunc("/product/create", addProduct)
-	mux.HandleFunc("/product", getProducts)
-	mux.HandleFunc("/product?id=1", getProduct)
+	// MySql Data source name
+	dsn := flag.String("dsn", "", "MySql Data source Name")
+	flag.Parse()
 
-	fileserver := http.FileServer(http.Dir("./ui/static"))
+	// New Info Logger
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate | log.Ltime)
+	
+	// New Error Logger
+	erroLog := log.New(os.Stderr, "ERROR\t", log.Ldate | log.Ltime | log.Lshortfile)
 
-	mux.Handle("/static/", http.StripPrefix("/static", fileserver))
+	db, err := openDB(*dsn)
+	app := &application{
+		errorLog: erroLog,
+		infoLog: infoLog,
+	}
+	
 
-	log.Println("starting a server on port 5000...")
-	err := http.ListenAndServe(":5000", mux)
-	log.Fatal(err)
+	// Initialize a server struct
+	srv := &http.Server{
+		Addr: *addr,
+		ErrorLog: erroLog,
+		Handler: app.routes(),
+	}
+
+	infoLog.Printf("starting a server on port %s", *addr)
+	err := srv.ListenAndServe()
+	erroLog.Fatal(err)
 }
