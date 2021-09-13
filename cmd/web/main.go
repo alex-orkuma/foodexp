@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"flag"
 	"log"
 	"net/http"
@@ -10,10 +11,9 @@ import (
 )
 
 // A Custom application struct for dependency injection
-type application struct	{
+type application struct {
 	errorLog *log.Logger
-	infoLog *log.Logger
-
+	infoLog  *log.Logger
 }
 
 func main() {
@@ -26,26 +26,43 @@ func main() {
 	flag.Parse()
 
 	// New Info Logger
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate | log.Ltime)
-	
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+
 	// New Error Logger
-	erroLog := log.New(os.Stderr, "ERROR\t", log.Ldate | log.Ltime | log.Lshortfile)
+	erroLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	db, err := openDB(*dsn)
+	if err != nil {
+		erroLog.Fatal(err)
+	}
+
+	defer db.Close()
 	app := &application{
 		errorLog: erroLog,
-		infoLog: infoLog,
+		infoLog:  infoLog,
 	}
-	
 
 	// Initialize a server struct
 	srv := &http.Server{
-		Addr: *addr,
+		Addr:     *addr,
 		ErrorLog: erroLog,
-		Handler: app.routes(),
+		Handler:  app.routes(),
 	}
 
 	infoLog.Printf("starting a server on port %s", *addr)
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 	erroLog.Fatal(err)
+}
+
+func openDB(dsn string) (*sql.DB, error) {
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = db.Ping(); err != nil {
+		return nil, err
+	}
+
+	return db, err
 }
