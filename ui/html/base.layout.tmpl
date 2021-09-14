@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Alex Orkuma">
-    <meta name="generator" content="Hugo 0.87.0">
     <title>{{template "title" .}} - Food Exp</title>
     <link rel='shortcut icon' href='/static/img/favicon.ico' type='image/x-icon'>
 
@@ -38,14 +37,11 @@
 </head>
 
 <body>
-    {{template "sidebar"}}
+    {{template "sidebar" .}}
     
     <div>
-        <header class="navbar bg-light sticky-top  flex-md-nowrap p-3 mb-3 border-bottom shadow">
+        <div class="navbar sticky-top bg-light border-bottom shadow p-3 mb-3 flex-column float-left" style="z-index: 1;">
             <div class="container">
-                <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">
-                   Theplace
-                </a>
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -57,7 +53,7 @@
                     </ul>
                 </div>
             </div>
-        </header>
+        </div>
         {{template "main" .}}
     </div>
     

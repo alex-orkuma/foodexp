@@ -1,13 +1,21 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
+
+	"github.com/alex-orkuma/foodexp/pkg/models"
 )
 
 func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
+
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
 
 	files := []string{
 		"./ui/html/dashboard.page.tmpl",
@@ -17,7 +25,7 @@ func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
 
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
-		app.serveError(w, err )
+		app.serveError(w, err)
 		return
 	}
 
@@ -36,12 +44,32 @@ func (app *application) addProduct(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	w.Write([]byte("Adding products to the database...."))
+
+	food_id := "FI9338"
+	food_name := "Akpu"
+	shelf_life := "50"
+
+	id, err := app.products.Insert(food_id, food_name, shelf_life)
+
+	if err != nil {
+		app.serveError(w, err)
+		return
+	}
+	http.Redirect(w, r, fmt.Sprintf("/product?id=%d", id), http.StatusSeeOther)
 }
 
 // Get all products handler
 func (app *application) getProducts(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Getting all products from the database"))
+
+	p, err := app.products.Latest()
+	if err != nil {
+		app.serveError(w, err)
+		return
+	}
+
+	for _, product := range p {
+		fmt.Fprintf(w, "%v\n", product)
+	}
 }
 
 // Get a single product hanler
@@ -52,5 +80,15 @@ func (app *application) getProduct(w http.ResponseWriter, r *http.Request) {
 		app.NotFound(w)
 		return
 	}
-	fmt.Fprintf(w, "Display a specific product with ID %d...", id)
+
+	s, err := app.products.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.NotFound(w)
+		} else {
+			app.serveError(w, err)
+		}
+		return
+	}
+	fmt.Fprintf(w, "%v", s)
 }
