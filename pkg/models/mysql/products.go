@@ -54,7 +54,7 @@ func (m *ProductModel) Get(id int) (*models.Products, error) {
 func (m *ProductModel) Latest() ([]*models.Products, error) {
 
 	stm := `SELECT id, food_id, food_name, shelf_life FROM products
-	ORDER BY id DESC LIMIT 10`
+	ORDER BY id ASC LIMIT 20`
 
 	rows, err := m.DB.Query(stm)
 	if err != nil {

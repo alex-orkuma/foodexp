@@ -17,6 +17,14 @@ func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	p, err := app.products.Latest()
+	if err != nil {
+		app.serveError(w, err)
+		return
+	}
+
+	data := &templateData{Products: p}
+
 	files := []string{
 		"./ui/html/dashboard.page.tmpl",
 		"./ui/html/sidebar.partial.tmpl",
@@ -29,7 +37,7 @@ func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = ts.Execute(w, nil)
+	err = ts.Execute(w, data)
 	if err != nil {
 		app.serveError(w, err)
 	}
