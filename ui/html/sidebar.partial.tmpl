@@ -6,56 +6,71 @@
                 <img class="m-3" src="../static//img/logo.png" alt="theplace logo">
                 <span class="fs-4">Menu</span>
             </a>
-            <hr>
-            <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                <a href="#" class="nav-link" aria-current="page">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
-                Dashboard
-                </a>
-            </li>
-            <div class="dropdown show">
-                <a class="dropdown-toggle" data-bs-toggle="collapse" href="#dropdownMenuLink" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"  aria-haspopup="true">
-                  Users
-                </a>
-              
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                  <a class="dropdown-item" href="#">Add User</a>
-                  <a class="dropdown-item" href="#">View User</a>
+            <a href="#" class="nav-link  d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none" aria-current="page">
+              <span class="material-icons "> home</span>
+               Dashboard
+            </a>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                  
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    <span class="material-icons">people_outline</span>
+                    Users
+                  </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
                 </div>
-            </div>
-            <div class="dropdown show">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  Branches
-                </a>
-              
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                  <a class="dropdown-item" href="#">Add Branch</a>
-                  <a class="dropdown-item" href="#">View Branches</a>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                    <span class="material-icons">store</span>
+                    Branches
+                  </button>
+                </h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
                 </div>
-            </div>
-            <div class="dropdown show">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Products
-                </a>
-              
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                  <a class="dropdown-item" href="#">Add Products</a>
-                  <a class="dropdown-item" href="#">View Products</a>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-heading">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse" aria-expanded="false" aria-controls="flush-collapse">
+                    <span class="material-icons">
+                      description
+                      </span>
+                    Products
+                  </button>
+                </h2>
+                <div id="flush-collapse" class="accordion-collapse collapse" aria-labelledby="flush-heading" data-bs-parent="#accordionFlushExample">
+                  <a href="#" class="nav-link  d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none" aria-current="page">
+                    Add Product
+                  </a>
+                  <a href="#" class="nav-link  d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none" aria-current="page">
+                    View Products
+                  </a>
                 </div>
-            </div>
-            <div class="dropdown show">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Reports
-                </a>
-              
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                  <a class="dropdown-item" href="#">All Post Reports</a>
-                  <a class="dropdown-item" href="#">Filtered Reports</a>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header d-flex align-items-center mb-3 mb-md-0 me-md-aut" id="flush-headingThree">
+                  
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                    <span class="material-icons">description</span>
+                    Report
+                  </button>
+                </h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
                 </div>
+              </div>
+              <a href="#" class="nav-link  d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none" aria-current="page">
+                <span class="material-icons">
+                  settings_power
+                  </span>
+                 Logout
+              </a>
             </div>
-            </ul>
-            <hr>
         </div>
     </div>
 </div>
