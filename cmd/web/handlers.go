@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"html/template"
 	"net/http"
 	"strconv"
 
@@ -23,24 +22,9 @@ func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := &templateData{Products: p}
-
-	files := []string{
-		"./ui/html/dashboard.page.tmpl",
-		"./ui/html/sidebar.partial.tmpl",
-		"./ui/html/base.layout.tmpl",
-	}
-
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serveError(w, err)
-		return
-	}
-
-	err = ts.Execute(w, data)
-	if err != nil {
-		app.serveError(w, err)
-	}
+	app.render(w, r, "dashboard.page.tmpl", &templateData{
+		Products: p,
+	})
 }
 
 // Add products handler

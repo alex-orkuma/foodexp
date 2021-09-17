@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"flag"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -13,9 +14,10 @@ import (
 
 // A Custom application struct for dependency injection
 type application struct {
-	errorLog *log.Logger
-	infoLog  *log.Logger
-	products *mysql.ProductModel
+	errorLog      *log.Logger
+	infoLog       *log.Logger
+	products      *mysql.ProductModel
+	templateCache map[string]*template.Template
 }
 
 func main() {
@@ -39,10 +41,18 @@ func main() {
 	}
 
 	defer db.Close()
+
+	templateCache, err := newTemplateCache("./ui/html/")
+
+	if err != nil {
+		erroLog.Fatal(err)
+	}
+
 	app := &application{
-		errorLog: erroLog,
-		infoLog:  infoLog,
-		products: &mysql.ProductModel{DB: *db},
+		errorLog:      erroLog,
+		infoLog:       infoLog,
+		products:      &mysql.ProductModel{DB: *db},
+		templateCache: templateCache,
 	}
 
 	// Initialize a server struct
