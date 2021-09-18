@@ -30,13 +30,6 @@ func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
 // Add products handler
 func (app *application) addProduct(w http.ResponseWriter, r *http.Request) {
 
-	if r.Method != http.MethodPost {
-
-		w.Header().Set("Allow", http.MethodPost)
-		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
 	food_id := "FI9338"
 	food_name := "Akpu"
 	shelf_life := "50"
@@ -47,7 +40,7 @@ func (app *application) addProduct(w http.ResponseWriter, r *http.Request) {
 		app.serveError(w, err)
 		return
 	}
-	http.Redirect(w, r, fmt.Sprintf("/product?id=%d", id), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/product%d", id), http.StatusSeeOther)
 }
 
 // Get all products handler
@@ -67,7 +60,7 @@ func (app *application) getProducts(w http.ResponseWriter, r *http.Request) {
 // Get a single product hanler
 func (app *application) getProduct(w http.ResponseWriter, r *http.Request) {
 
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
 	if err != nil || id < 1 {
 		app.NotFound(w)
 		return
@@ -83,4 +76,8 @@ func (app *application) getProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintf(w, "%v", s)
+}
+
+func (app *application) createProductForm(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Display create product form..."))
 }
