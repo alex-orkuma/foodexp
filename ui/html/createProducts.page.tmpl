@@ -1,0 +1,40 @@
+{{template "base" .}}
+
+{{define "title"}} Create New Product {{end}}
+ 
+<div class="col-md-9  ms-sm-auto col-lg-10 px-md-4">
+    <div class="row">
+        <div class="col-md-3 py-md-4">
+            <div class=" p-2 card bg-light boder shadow" style="width: 16rem;">
+                <img class="card-img" src="../static/img/side2.jpg" alt="Card image">
+            </div>
+        </div>
+        <div class="col-md-9 py-md-5" >
+            <form class="p-2 row g-3 boder shadow" action="/product/create" method="POST">
+                <div class="col-12">
+                  <h5>Create Product</h5>
+                  <p>Please fill the form below to create a Product on the platform.</p>
+                </div>
+                <div class="col-12">
+                  <label for="food_id" class="form-label">Product ID</label>
+                  <input type="text" class="form-control" id="food_id" name="food_id" placeholder="">
+                </div>
+                <div class="col-md-6">
+                  <label for="food_name" class="form-label">Product name</label>
+                  <input type="text" class="form-control" id="food_name" name="food_name">
+                </div>
+                <div class="col-md-6">
+                  <label for="shelf_life" class="form-label">Shelf Life</label>
+                  <input type="number" class="form-control" id="shelf_life" name="shelf_life">
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{define "main"}}
+
+{{end}}

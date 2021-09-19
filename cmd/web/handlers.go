@@ -79,5 +79,6 @@ func (app *application) getProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) createProductForm(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Display create product form..."))
+	app.render(w, r, "createProducts.page.tmpl", nil)
+
 }
