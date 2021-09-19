@@ -30,9 +30,15 @@ func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
 // Add products handler
 func (app *application) addProduct(w http.ResponseWriter, r *http.Request) {
 
-	food_id := "FI9338"
-	food_name := "Akpu"
-	shelf_life := "50"
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	food_id := r.PostForm.Get("food_id")
+	food_name := r.PostForm.Get("food_name")
+	shelf_life := r.PostForm.Get("shelf_life")
 
 	id, err := app.products.Insert(food_id, food_name, shelf_life)
 
@@ -40,7 +46,7 @@ func (app *application) addProduct(w http.ResponseWriter, r *http.Request) {
 		app.serveError(w, err)
 		return
 	}
-	http.Redirect(w, r, fmt.Sprintf("/product%d", id), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/product/%d", id), http.StatusSeeOther)
 }
 
 // Get all products handler
