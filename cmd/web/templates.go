@@ -5,11 +5,13 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/alex-orkuma/foodexp/pkg/forms"
 	"github.com/alex-orkuma/foodexp/pkg/models"
 )
 
 type templateData struct {
 	CurrentYear int
+	Form        *forms.Form
 	Product     *models.Products
 	Products    []*models.Products
 }

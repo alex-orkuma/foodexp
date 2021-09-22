@@ -7,15 +7,18 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/alex-orkuma/foodexp/pkg/models/mysql"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/golangcollege/sessions"
 )
 
 // A Custom application struct for dependency injection
 type application struct {
 	errorLog      *log.Logger
 	infoLog       *log.Logger
+	session       *sessions.Session
 	products      *mysql.ProductModel
 	templateCache map[string]*template.Template
 }
@@ -27,6 +30,9 @@ func main() {
 
 	// MySql Data source name
 	dsn := flag.String("dsn", "foodexp:Or$kumashnd417@/foodexp?parseTime=true", "MySql Data source Name")
+
+	// Session secret key flag
+	secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "secret key")
 	flag.Parse()
 
 	// New Info Logger
@@ -48,9 +54,13 @@ func main() {
 		erroLog.Fatal(err)
 	}
 
+	session := sessions.New([]byte(*secret))
+	session.Lifetime = 12 * time.Hour
+
 	app := &application{
 		errorLog:      erroLog,
 		infoLog:       infoLog,
+		session:       session,
 		products:      &mysql.ProductModel{DB: *db},
 		templateCache: templateCache,
 	}

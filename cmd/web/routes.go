@@ -10,12 +10,15 @@ import (
 func (app *application) routes() http.Handler {
 
 	standardMiddleware := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
+
+	// Dynamic Chian middleware for dynmic routes
+	dynmicMiddleware := alice.New(app.session.Enable)
 	mux := pat.New()
 
-	mux.Get("/", http.HandlerFunc(app.dashboard))
-	mux.Get("/product/create", http.HandlerFunc(app.createProductForm))
-	mux.Post("/product/create", http.HandlerFunc(app.addProduct))
-	mux.Get("/product/:id", http.HandlerFunc(app.getProduct))
+	mux.Get("/", dynmicMiddleware.ThenFunc(app.dashboard))
+	mux.Get("/product/create", dynmicMiddleware.ThenFunc(app.createProductForm))
+	mux.Post("/product/create", dynmicMiddleware.ThenFunc(app.addProduct))
+	mux.Get("/product/:id", dynmicMiddleware.ThenFunc(app.getProduct))
 	//mux.HandleFunc("/product", app.getProducts)
 
 	fileserver := http.FileServer(http.Dir("./ui/static"))

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/alex-orkuma/foodexp/pkg/forms"
 	"github.com/alex-orkuma/foodexp/pkg/models"
 )
 
@@ -36,12 +37,18 @@ func (app *application) addProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	food_id := r.PostForm.Get("food_id")
-	food_name := r.PostForm.Get("food_name")
-	shelf_life := r.PostForm.Get("shelf_life")
+	// Validation check
+	form := forms.New(r.PostForm)
+	form.Required("food_id", "food_name", "shelf_life")
+	form.MaxLength("food_id", 100)
+	form.MaxLength("food_name", 100)
 
-	id, err := app.products.Insert(food_id, food_name, shelf_life)
+	if !form.Valid() {
+		app.render(w, r, "createProducts.page.tmpl", &templateData{Form: form})
+		return
+	}
 
+	id, err := app.products.Insert(form.Get("food_id"), form.Get("food_name"), form.Get("shelf_life"))
 	if err != nil {
 		app.serveError(w, err)
 		return
@@ -85,6 +92,8 @@ func (app *application) getProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) createProductForm(w http.ResponseWriter, r *http.Request) {
-	app.render(w, r, "createProducts.page.tmpl", nil)
+	app.render(w, r, "createProducts.page.tmpl", &templateData{
+		Form: forms.New(nil),
+	})
 
 }
