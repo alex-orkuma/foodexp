@@ -53,6 +53,8 @@ func (app *application) addProduct(w http.ResponseWriter, r *http.Request) {
 		app.serveError(w, err)
 		return
 	}
+
+	app.session.Put(r, "flash", "Product successfully created")
 	http.Redirect(w, r, fmt.Sprintf("/product/%d", id), http.StatusSeeOther)
 }
 
