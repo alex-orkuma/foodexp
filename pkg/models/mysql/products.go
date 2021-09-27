@@ -8,7 +8,7 @@ import (
 )
 
 type ProductModel struct {
-	DB sql.DB
+	DB *sql.DB
 }
 
 func (m *ProductModel) Insert(food_id, food_name, shelf_life string) (int, error) {

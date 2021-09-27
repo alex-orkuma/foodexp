@@ -21,6 +21,7 @@ type application struct {
 	infoLog       *log.Logger
 	session       *sessions.Session
 	products      *mysql.ProductModel
+	users         *mysql.UserModel
 	templateCache map[string]*template.Template
 }
 
@@ -63,7 +64,8 @@ func main() {
 		errorLog:      erroLog,
 		infoLog:       infoLog,
 		session:       session,
-		products:      &mysql.ProductModel{DB: *db},
+		products:      &mysql.ProductModel{DB: db},
+		users:         &mysql.UserModel{DB: db},
 		templateCache: templateCache,
 	}
 
