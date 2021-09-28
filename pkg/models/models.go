@@ -20,9 +20,10 @@ type Products struct {
 
 type User struct {
 	ID             int
-	Name           string
+	FirstName      string
+	LastName       string
 	Email          string
 	HashedPassword []byte
 	Created        time.Time
-	Active         bool
+	Status         bool
 }
