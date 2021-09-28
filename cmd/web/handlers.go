@@ -124,17 +124,28 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		app.render(w, r, "signup.page.tmpl", &templateData{Form: form})
 	}
 
-	fmt.Fprintln(w, "create a new user")
+	err = app.users.Insert(form.Get("first_name"), form.Get("last_name"), form.Get("email"), form.Get("password"), form.Get("role"))
+	if err != nil {
+		if errors.Is(err, models.ErrDuplicateEmail) {
+			form.Errors.Add("email", "Address is already in use")
+			app.render(w, r, "signup.page.tmpl", &templateData{Form: form})
+		} else {
+			app.serveError(w, err)
+		}
+		return
+	}
+
+	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
 
 func (app *application) loginUserForm(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(w, "Display user login form...")
+	fmt.Fprintln(w, "Display user login form...")
 }
 
 func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(w, "Authenticate and login user...")
+	fmt.Fprintln(w, "Authenticate and login user...")
 }
 
 func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(w, "Logout the user...")
+	fmt.Fprintln(w, "Logout the user...")
 }

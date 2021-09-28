@@ -26,4 +26,5 @@ type User struct {
 	HashedPassword []byte
 	Created        time.Time
 	Status         bool
+	Role           string
 }
