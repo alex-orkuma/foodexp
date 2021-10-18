@@ -22,8 +22,8 @@ func (m *UserModel) Insert(first_name, last_name, email, password, role string) 
 		return err
 	}
 
-	stmt := `INSERT INTO users_admin (first_name, last_name, email, password, role, statuss)
-	VALUES(?, ?, ?, ?, ?, "active")`
+	stmt := `INSERT INTO users_admin (first_name, last_name, email, password, role)
+	VALUES(?, ?, ?, ?, ?)`
 
 	_, err = m.DB.Exec(stmt, first_name, last_name, email, string(hashedPassword), role)
 	if err != nil {
@@ -41,8 +41,35 @@ func (m *UserModel) Insert(first_name, last_name, email, password, role string) 
 	return nil
 }
 
-func (m *UserModel) Authenticate(email, password string) (int, error) {
-	return 0, nil
+func (m *UserModel) Authenticate(email, password string) (int, string, error) {
+	var id int
+
+	var hashedPassword []byte
+
+	var role string
+
+	stmt := "SELECT id, password, role FROM users_admin where email = ? AND active = TRUE"
+
+	row := m.DB.QueryRow(stmt, email)
+	err := row.Scan(&id, &hashedPassword, &role)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return 0, "", models.ErrInvalidCredentials
+		} else {
+			return 0, "", err
+		}
+	}
+
+	err = bcrypt.CompareHashAndPassword(hashedPassword, []byte(password))
+	if err != nil {
+		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+			return 0, "", models.ErrInvalidCredentials
+		} else {
+			return 0, "", err
+		}
+	}
+
+	return id, role, nil
 }
 
 func (m *UserModel) Get(id int) (*models.User, error) {
